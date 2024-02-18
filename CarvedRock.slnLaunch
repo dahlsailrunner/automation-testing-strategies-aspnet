@@ -1,14 +1,16 @@
 [
   {
-    "Name": "New Profile",
+    "Name": "Launch-UI-and-API",
     "Projects": [
       {
         "Name": "CarvedRock.Api\\CarvedRock.Api.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": ""
       },
       {
         "Name": "CarvedRock.WebApp\\CarvedRock.WebApp.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": ""
       }
     ]
   }
