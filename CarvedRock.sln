@@ -13,10 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.WebApp", "Carved
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{52B78FD2-1E54-4EE1-897C-F3BD6F4945A5}"
 	ProjectSection(SolutionItems) = preProject
+		CarvedRock.slnLaunch = CarvedRock.slnLaunch
 		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarvedRock.Core", "CarvedRock.Core\CarvedRock.Core.csproj", "{B93304E2-F170-47D6-98AC-6FEF0E5F99E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.Core", "CarvedRock.Core\CarvedRock.Core.csproj", "{B93304E2-F170-47D6-98AC-6FEF0E5F99E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
