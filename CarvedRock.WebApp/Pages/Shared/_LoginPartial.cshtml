@@ -1,0 +1,15 @@
+﻿<ul class="navbar-nav">
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        <div class="account d-flex flex-column">
+            @User.Identity.Name <a href="/Logout" style="font-weight:bold;">Sign Out</a>
+        </div>
+    }
+    else
+    {
+        var returnUrl = Context.Request.Path + Context.Request.QueryString;
+        <li class="nav-item">
+            <a class="nav-link text-dark" style="font-weight:bold;" href="/Login?ReturnUrl=@returnUrl">Sign in</a>
+        </li>
+    }
+</ul>

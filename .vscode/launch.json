@@ -1,0 +1,55 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "API - .NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-api",
+            "program": "${workspaceFolder}/CarvedRock.Api/bin/Debug/net8.0/CarvedRock.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/CarvedRock.Api",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",                
+                "pattern": "Now listening on:\\s+(https?://\\S+)\"?"
+            },           
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+                //"Logging__LogLevel__CarvedRock.Api.Controllers": "Debug"                
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "UI - .NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-ui",
+            "program": "${workspaceFolder}/CarvedRock.WebApp/bin/Debug/net8.0/CarvedRock.WebApp.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/CarvedRock.WebApp",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",                
+                "pattern": "Now listening on:\\s+(https?://\\S+)\"?"
+            },           
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+                //"Logging__LogLevel__CarvedRock.Api.Controllers": "Debug"                
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ]
+}

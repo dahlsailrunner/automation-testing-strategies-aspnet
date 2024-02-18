@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Name": "CarvedRock.Api\\CarvedRock.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Name": "CarvedRock.WebApp\\CarvedRock.WebApp.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
