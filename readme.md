@@ -33,7 +33,7 @@ Here are the features:
 - **API**
   - `GET` based on category (or "all") and by id allow anonymous requests
   - `POST` requires authentication and an `admin` role
-  - Validation will be done and errors returned as a `400 Bad Request` with `ProblemDetails`
+  - Validation will be done with [FluentValidation](https://docs.fluentvalidation.net/en/latest/index.html) and errors returned as a `400 Bad Request` with `ProblemDetails`
   - A `GET` with a category of something other than "all", "boots", "equip", or "kayak" will return a `500 internal server error` with `ProblemDetails`
   - Data is refreshed to a known state as the app starts
 - Authentication provided by OIDC via the [demo Duende Identity Server](https://demo.duendesoftware.com)
@@ -64,20 +64,33 @@ RUnning in VS Code is a totally legitimate use-case for this solution and
 repo.
 
 The same instructions above (Getting Started) apply here, but the following
-extensions should probably be installed:
+extension should probably be installed (it includes some other extensions):
 
-- [C# (the language extension)](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
 - [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
 
 Then run the API project and the UI project.
 
-## EF Core Migrations
+## Data and EF Core Migrations
 
 The `dotnet ef` tool is used to manage EF Core migrations.  The following command is used to create migrations (from the `CarvedRock.Data` folder).
 
 ```bash
 dotnet ef migrations add Initial -s ../CarvedRock.Api
 ```
+
+The initial setup for the application uses SQLite.
+The data will be stored in a file called `carvedrock-sample.sqlite` as
+defined in the API project's `appsettings.json` file.
+
+The location of the file is in the "local AppData" folder (`Environment.SpecialFolder.LocalApplicationData`):
+
+- Windows: `C:\Users\<username>\AppData\Local\`
+- Mac: `/Users/USERNAME/.local/share`
+
+To browse / query the data, you can use some handy extensions:
+
+- In Visual Studio, use the [SQLite and SQL Server Compact Toolbox](https://marketplace.visualstudio.com/items?itemName=ErikEJ.SQLServerCompactSQLiteToolbox) extension
+- In VS Code, use the [SQLite Viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer) extension
 
 ## Verifiying Emails
 
