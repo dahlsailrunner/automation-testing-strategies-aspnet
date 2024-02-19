@@ -6,15 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="emailTemplate.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="emailTemplate.html" />
-  </ItemGroup>
-
-  <ItemGroup>
+   <ItemGroup>
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

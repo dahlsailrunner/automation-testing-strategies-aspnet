@@ -1,8 +1,6 @@
-﻿using System.Diagnostics;
-using CarvedRock.Data.Entities;
+﻿using CarvedRock.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CarvedRock.Data;
 

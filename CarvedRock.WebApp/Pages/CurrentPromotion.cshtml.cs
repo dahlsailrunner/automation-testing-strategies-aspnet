@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace CarvedRock.WebApp.Pages
+namespace CarvedRock.WebApp.Pages;
+
+public class CurrentPromotionModel : PageModel
 {
-    public class CurrentPromotionModel : PageModel
-    {
-        public void OnGet()
-        {
-            throw new NotImplementedException();
-        }
+    public void OnGet()
+    {        
     }
 }

@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace CarvedRock.WebApp.Pages
+namespace CarvedRock.WebApp.Pages;
+
+public class LogoutModel : PageModel
 {
-    public class LogoutModel : PageModel
+    public async Task OnGetAsync()
     {
-        public async Task OnGetAsync()
-        {
-            await HttpContext.SignOutAsync();
-            Response.Redirect("/");
-        }
+        await HttpContext.SignOutAsync();
+        Response.Redirect("/");
     }
 }
