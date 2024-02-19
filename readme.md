@@ -2,7 +2,9 @@
 
 ## Getting Started
 
-You should set both the `Api` and the `WebApp` projects as startup projects.
+You should set both the `Api` and the `WebApp` projects as startup projects. In Visual
+Studio this can be done by "Configure Startup Projects", then choosing "Multiple startup projects",
+and finally choosing the `Launch-UI-and-API` profile.
 
 The solution uses two services that it expects to be running locally. The simplest way to
 run these services is to use Docker.  The following commands will start the services.
@@ -15,7 +17,7 @@ docker pull datalust/seq
 docker run --name seq -d --restart unless-stopped -e ACCEPT_EULA=Y -p 5341:80 datalust/seq
 ```
 
-But then you should be able to simply run the solution.
+Even without them running you should be able to run the solution.
 
 To see logs, you can navigate to [http://localhost:5341](http://localhost:5341).
 
