@@ -96,9 +96,9 @@ API calls call give you the content of the email body that you
 want to verify:
 
 ```bash
-GET http://localhost://3000/api/messages
+GET http://localhost:3000/api/messages
 
 ### find the ID of the message you care about
 
-GET http://localhost://3000/api/messages/<message-guid>/html
+GET http://localhost:3000/api/messages/<message-guid>/html
 ```
