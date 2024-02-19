@@ -22,23 +22,21 @@ public class NewProductValidator : AbstractValidator<NewProductModel>
         RuleFor(p => p.Name)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull().WithMessage("{PropertyName} is required.")
-            .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
-
-        RuleFor(e => e.Name)
-            .MustAsync(NameIsUnique)
-            .WithMessage("A company with the same name already exists.");
-
-        RuleFor(p => p.Category)
-            .Must(Constants.Categories.Contains)
-            .WithMessage($"Category must be one of {string.Join(",", Constants.Categories)}.");
-        RuleFor(p => p.Price)
-           .Must(PriceIsValid)
-           .WithMessage(p => $"Price for {p.Category} must be between {_priceRanges[p.Category]!.Min:C} and {_priceRanges[p.Category]!.Max:C}");
+            .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.")
+            .MustAsync(NameIsUnique).WithMessage("A company with the same name already exists.");
 
         RuleFor(p => p.Description)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull().WithMessage("{PropertyName} is required.")
             .MaximumLength(150).WithMessage("{PropertyName} must not exceed 150 characters.");
+
+        RuleFor(p => p.Category)
+            .Must(Constants.Categories.Contains)
+            .WithMessage($"Category must be one of {string.Join(",", Constants.Categories)}.");
+
+        RuleFor(p => p.Price)
+           .Must(PriceIsValid)
+           .WithMessage(p => $"Price for {p.Category} must be between {_priceRanges[p.Category]!.Min:C} and {_priceRanges[p.Category]!.Max:C}");
 
         RuleFor(p => p.ImgUrl)
             .Must(url => Uri.IsWellFormedUriString(url, UriKind.Absolute))
