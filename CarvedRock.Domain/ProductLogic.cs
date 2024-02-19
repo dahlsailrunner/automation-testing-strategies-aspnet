@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace CarvedRock.Domain;
 
 public class ProductLogic(ILogger<ProductLogic> logger, ICarvedRockRepository repo,
-    IMapper mapper, NewProductValidator validator) : IProductLogic
+    IMapper mapper) : IProductLogic
 {
     public async Task<IEnumerable<Product>> GetProductsForCategoryAsync(string category)
     {               
