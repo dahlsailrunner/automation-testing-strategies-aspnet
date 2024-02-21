@@ -10,12 +10,13 @@ namespace CarvedRock.Api.Controllers;
 [ApiController]
 [Route("[controller]")]
 public partial class ProductController(ILogger<ProductController> logger, IProductLogic productLogic,
-     NewProductValidator validator) : ControllerBase
+     NewProductValidator validator, IWebHostEnvironment webHostEnv) : ControllerBase
 {
     [HttpGet]
     [AllowAnonymous]
     public async Task<IEnumerable<Product>> Get(string category = "all")
     {
+        var env = webHostEnv.EnvironmentName;
         return await productLogic.GetProductsForCategoryAsync(category);
     }
 

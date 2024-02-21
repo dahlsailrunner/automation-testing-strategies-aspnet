@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using AutoMapper;
 using CarvedRock.Core;
 using CarvedRock.Data;
@@ -13,12 +12,7 @@ public class ProductLogic(ILogger<ProductLogic> logger, ICarvedRockRepository re
     public async Task<IEnumerable<Product>> GetProductsForCategoryAsync(string category)
     {               
         logger.LogInformation("Getting products in logic for {category}", category);
-
-        Activity.Current?.AddEvent(new ActivityEvent("Getting products from repository"));
-        var results = await repo.GetProductsAsync(category);
-        Activity.Current?.AddEvent(new ActivityEvent("Retrieved products from repository"));
-
-        return results;
+        return await repo.GetProductsAsync(category);
     }
 
     public async Task<Product?> GetProductByIdAsync(int id)
