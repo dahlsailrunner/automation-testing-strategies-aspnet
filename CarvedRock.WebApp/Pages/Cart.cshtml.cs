@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
@@ -5,6 +6,7 @@ using System.Text.Json;
 namespace CarvedRock.WebApp.Pages;
 
 public record CartItem(int Id, int Quantity, string Name, string Category, double Price, double Total);
+
 [ValidateAntiForgeryToken]
 public class CartModel(IProductService productService) : PageModel
 {

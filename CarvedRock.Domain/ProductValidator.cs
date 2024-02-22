@@ -45,6 +45,8 @@ public class NewProductValidator : AbstractValidator<NewProductModel>
 
     private bool PriceIsValid(NewProductModel ctx, double priceToValidate)
     {
+        if (!_priceRanges.ContainsKey(ctx.Category)) return true; // no category defined
+
         var range = _priceRanges[ctx.Category];
         return priceToValidate >= range.Min && priceToValidate <= range.Max;
     }
