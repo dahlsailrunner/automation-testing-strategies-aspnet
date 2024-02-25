@@ -115,3 +115,32 @@ GET http://localhost:3000/api/messages
 
 GET http://localhost:3000/api/messages/<message-guid>/html
 ```
+
+## Test Coverage 
+
+To see test coverage for the inner loop tests you've written,
+you can use the default [**coverlet**](https://github.com/coverlet-coverage/coverlet) tool that is included with
+the `XUnit` test project template.
+
+```bash
+dotnet test --collect:"XPlat Code Coverage"
+```
+
+Then use the [**reportgenerator**](https://github.com/danielpalme/ReportGenerator) global tool to generate an HTML report.  To install the tool
+(you only need to do this once):
+
+```bash
+dotnet tool install --global dotnet-reportgenerator-globaltool
+```
+
+Then run the following command to generate the report:
+
+```bash
+reportgenerator -reports:".\Tests\**\TestResults\**\coverage.cobertura.xml" -targetdir:"coverage" -reporttypes:Html
+```
+To remove any contents from previous runs, use the
+following command:
+
+```bash
+gci -include TestResults,coverage -recurse | remove-item -force -recurse
+```

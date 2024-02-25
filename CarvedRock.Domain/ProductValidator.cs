@@ -50,6 +50,7 @@ public class NewProductValidator : AbstractValidator<NewProductModel>
         var range = _priceRanges[ctx.Category];
         return priceToValidate >= range.Min && priceToValidate <= range.Max;
     }
+
     private async Task<bool> NameIsUnique(string name, CancellationToken token)
     {
         return await _repo.IsProductNameUniqueAsync(name);

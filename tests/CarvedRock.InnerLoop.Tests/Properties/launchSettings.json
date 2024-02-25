@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "CarvedRock.InnerLoop.Tests": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:64844;http://localhost:64845"
+    }
+  }
+}
