@@ -1,12 +1,14 @@
 ﻿using CarvedRock.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CarvedRock.Data;
 
 public class LocalContext(DbContextOptions<LocalContext> options) : DbContext(options)
 {
-    public DbSet<Product> Products { get; set; } = null!;        
+    public DbSet<Product> Products { get; set; } = null!;
 
+    [ExcludeFromCodeCoverage]
     public void MigrateAndCreateData()
     {
         Database.EnsureDeleted();

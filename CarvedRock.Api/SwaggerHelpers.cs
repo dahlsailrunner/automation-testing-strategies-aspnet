@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CarvedRock.Api;
 
+[ExcludeFromCodeCoverage]
 public class SwaggerOptions(ILogger<SwaggerOptions> logger) : IConfigureOptions<SwaggerGenOptions>
 {
     private readonly ILogger<SwaggerOptions> _logger = logger;

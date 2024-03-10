@@ -15,13 +15,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		CarvedRock.slnLaunch = CarvedRock.slnLaunch
 		readme.md = readme.md
+		local-coverage.ps1 = local-coverage.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.Core", "CarvedRock.Core\CarvedRock.Core.csproj", "{B93304E2-F170-47D6-98AC-6FEF0E5F99E0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{377907D2-D023-4282-BF01-B9EFC0CBD59C}"
 	ProjectSection(SolutionItems) = preProject
-		carvedrock.runsettings = carvedrock.runsettings
+		tests\carvedrock.runsettings = tests\carvedrock.runsettings
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.InnerLoop.Tests", "tests\CarvedRock.InnerLoop.Tests\CarvedRock.InnerLoop.Tests.csproj", "{89E7E9CE-70BC-49A5-B6EB-2A545AFBE267}"

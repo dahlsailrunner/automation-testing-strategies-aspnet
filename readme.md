@@ -166,7 +166,7 @@ Then run the following command to generate the report:
 reportgenerator -reports:".\Tests\**\TestResults\**\coverage.cobertura.xml" -targetdir:"coverage" -reporttypes:Html
 ```
 To remove any contents from previous runs, use the
-following command:
+following PowerShell command:
 
 ```bash
 gci -include TestResults,coverage -recurse | remove-item -force -recurse

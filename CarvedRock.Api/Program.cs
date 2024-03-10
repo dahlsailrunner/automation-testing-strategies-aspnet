@@ -15,6 +15,7 @@ using CarvedRock.Domain.Mapping;
 using FluentValidation;
 using CarvedRock.Core;
 using Microsoft.AspNetCore.Authentication;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHealthChecks()
@@ -98,6 +99,21 @@ app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
+    SetupDevelopment(app);
+}
+
+app.MapFallback(() => Results.Redirect("/swagger"));
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers().RequireAuthorization();
+
+app.MapHealthChecks("health").AllowAnonymous();
+
+app.Run();
+
+[ExcludeFromCodeCoverage]
+void SetupDevelopment(WebApplication app)
+{
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
@@ -113,12 +129,6 @@ if (app.Environment.IsDevelopment())
         options.OAuthUsePkce();
     });
 }
-app.MapFallback(() => Results.Redirect("/swagger"));
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers().RequireAuthorization();
 
-app.MapHealthChecks("health").AllowAnonymous();
-
-app.Run();
 public partial class Program { } // used for integration tests
+

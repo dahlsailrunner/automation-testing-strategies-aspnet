@@ -77,6 +77,32 @@ public class ProductValidatorTests(ITestOutputHelper outputHelper)
         Assert.Equal(errorMessage, result.Errors[0].ErrorMessage);
     }
 
+    [Fact]    
+    public async Task CategoryValiationErrors()
+    {
+        //arrange --------------------
+        var newProduct = new NewProductModel
+        {
+            Name = "product-name",
+            Description = "A new product",
+            Category = "not a category",
+            Price = 100,
+            ImgUrl = "http://www.example.com/image.jpg"
+        };
+        var repo = Substitute.For<ICarvedRockRepository>();
+        repo.IsProductNameUniqueAsync(Arg.Any<string>()).Returns(true);
+
+        var validator = new NewProductValidator(repo);
+
+        //act ------------------------
+        var result = await validator.ValidateAsync(newProduct);
+        outputHelper.WriteLine(result.ToString());
+
+        //assert ---------------------
+        Assert.False(result.IsValid);
+        Assert.StartsWith("Category must be one of ", result.Errors[0].ErrorMessage);
+    }
+
     [Theory]
     [InlineData("", "Description is required.")]
     [InlineData(" ", "Description is required.")]
