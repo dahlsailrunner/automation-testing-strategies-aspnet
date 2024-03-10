@@ -20,8 +20,23 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.Core", "CarvedRock.Core\CarvedRock.Core.csproj", "{B93304E2-F170-47D6-98AC-6FEF0E5F99E0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{377907D2-D023-4282-BF01-B9EFC0CBD59C}"
+	ProjectSection(SolutionItems) = preProject
+		carvedrock.runsettings = carvedrock.runsettings
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarvedRock.InnerLoop.Tests", "tests\CarvedRock.InnerLoop.Tests\CarvedRock.InnerLoop.Tests.csproj", "{89E7E9CE-70BC-49A5-B6EB-2A545AFBE267}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.InnerLoop.Tests", "tests\CarvedRock.InnerLoop.Tests\CarvedRock.InnerLoop.Tests.csproj", "{89E7E9CE-70BC-49A5-B6EB-2A545AFBE267}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql-container", "sql-container", "{F3EC70E7-6F1D-4B3B-B93D-E90489117D36}"
+	ProjectSection(SolutionItems) = preProject
+		sql-container\CreateDatabase.sql = sql-container\CreateDatabase.sql
+		sql-container\entrypoint.sh = sql-container\entrypoint.sh
+		sql-container\InitializeDatabase.sql = sql-container\InitializeDatabase.sql
+		sql-container\readme.md = sql-container\readme.md
+		sql-container\InsertSomeData.sql = sql-container\InsertSomeData.sql
+		sql-container\setup.sh = sql-container\setup.sh
+		sql-container\wait-for-it.sh = sql-container\wait-for-it.sh
+		sql-container\sql.Dockerfile = sql-container\sql.Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

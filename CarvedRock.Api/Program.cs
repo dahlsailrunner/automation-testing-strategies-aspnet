@@ -68,6 +68,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IProductLogic, ProductLogic>();
 
+// SQLite --------------------------------
 var filename = Path.Join(
            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
            builder.Configuration.GetConnectionString("CarvedRock"));
@@ -76,6 +77,16 @@ builder.Services.AddDbContext<LocalContext>(options => options
         .UseSqlite($"Data Source={filename}")
         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
+// Postgres -----------------------------
+//builder.Services.AddDbContext<LocalContext>(options => options
+//    .UseNpgsql(builder.Configuration.GetConnectionString("CarvedRockPostgres"))
+//    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
+// SQL Server ---------------------------
+//builder.Services.AddDbContext<LocalContext>(options => options
+//    .UseSqlServer(builder.Configuration.GetConnectionString("CarvedRockSqlServer"))
+//    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
 builder.Services.AddScoped<ICarvedRockRepository, CarvedRockRepository>();
 
 builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
@@ -83,16 +94,17 @@ builder.Services.AddValidatorsFromAssemblyContaining<NewProductValidator>();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<LocalContext>();
-    context.MigrateAndCreateData();
-}
 app.UseExceptionHandler();  
 
 if (app.Environment.IsDevelopment())
 {
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<LocalContext>();
+        context.MigrateAndCreateData();
+    }
+
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {

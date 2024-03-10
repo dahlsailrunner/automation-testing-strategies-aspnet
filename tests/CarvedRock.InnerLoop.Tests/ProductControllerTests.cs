@@ -7,9 +7,12 @@ using Xunit.Abstractions;
 
 namespace CarvedRock.InnerLoop.Tests;
 
+[Collection(nameof(InnerLoopCollection))]
 public class ProductControllerTests(CustomApiFactory factory, 
     ITestOutputHelper outputHelper) : IClassFixture<CustomApiFactory>
 {
+    private readonly Faker _faker = new();
+
     [Fact]
     public async Task GetProducts_Success()
     {
@@ -17,20 +20,28 @@ public class ProductControllerTests(CustomApiFactory factory,
         var products = await client.GetJsonResultAsync<IEnumerable<ProductModel>>
             ("/product?category=all", HttpStatusCode.OK, outputHelper);
         
-        Assert.True(products.Count() >= 6);
+        Assert.True(products.Count() >= factory.SharedFixture.OriginalProducts!.Count);  
+        
+        foreach (var expectedProduct in factory.SharedFixture.OriginalProducts!)
+        {
+            Assert.Contains(products, p => p.Id == expectedProduct.Id);
+        }
     }
 
     [Fact]
     public async Task GetProductById_Success()
     {
+        var expectedProduct = _faker.PickRandom(factory.SharedFixture.OriginalProducts!);
+
         var client = factory.CreateClient();
         var product = await client.GetJsonResultAsync<ProductModel>
-            ("/product/2", HttpStatusCode.OK, outputHelper);
+            ($"/product/{expectedProduct.Id}", HttpStatusCode.OK, outputHelper);
 
-        Assert.Equal(2, product.Id);
-        Assert.Equal("Coastliner", product.Name);
-        Assert.Equal(49.99, product.Price);
-        Assert.Equal("boots", product.Category);
+        Assert.Equal(expectedProduct.Id, product.Id);
+        Assert.Equal(expectedProduct.Name, product.Name);
+        Assert.Equal(expectedProduct.Description, product.Description);
+        Assert.Equal(expectedProduct.Category, product.Category);
+        Assert.Equal(expectedProduct.Price, product.Price);
     }
 
     [Fact]

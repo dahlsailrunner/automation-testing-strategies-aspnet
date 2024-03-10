@@ -92,6 +92,33 @@ To browse / query the data, you can use some handy extensions:
 - In Visual Studio, use the [SQLite and SQL Server Compact Toolbox](https://marketplace.visualstudio.com/items?itemName=ErikEJ.SQLServerCompactSQLiteToolbox) extension
 - In VS Code, use the [SQLite Viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer) extension
 
+### Switching Databases
+
+Switching between SQLite and Postgres and SQL Server is a matter
+of commenting out the unused dbcontext setup / initialization logic and
+commenting in what you want:
+
+- `Program.cs` of the API project
+- `CustomApiFactory.cs` of the InnerLoopTests project
+- `SharedFixture.cs` of the InnerLoopTests project
+
+You also need to manually delete the `CarvedRock.Data.Migrations`
+folder and recreate the migrations using the instructions above.
+
+Running Postgres for local development:
+
+```bash
+docker pull postgres
+docker run -d --name carvedrock-postgres -e POSTGRES_PASSWORD=carvedrock -p 5432:5432 postgres
+```
+
+Running SQL Server for local development:
+
+```bash
+docker pull mcr.microsoft.com/mssql/server
+docker run -d --name carvedrock-sqlserver -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Carvedr0ck!" -p 1433:1433 mcr.microsoft.com/mssql/server
+```
+
 ## Verifiying Emails
 
 The very simple email functionality is done using a template
