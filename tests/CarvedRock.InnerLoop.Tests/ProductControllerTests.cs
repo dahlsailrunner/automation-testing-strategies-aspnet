@@ -9,20 +9,19 @@ namespace CarvedRock.InnerLoop.Tests;
 
 [Collection(nameof(InnerLoopCollection))]
 public class ProductControllerTests(CustomApiFactory factory, 
-    ITestOutputHelper outputHelper) : IClassFixture<CustomApiFactory>
+    ITestOutputHelper outputHelper) : BaseTest(factory), IClassFixture<CustomApiFactory>
 {
     private readonly Faker _faker = new();
 
     [Fact]
     public async Task GetProducts_Success()
     {
-        var client = factory.CreateClient();
-        var products = await client.GetJsonResultAsync<IEnumerable<ProductModel>>
+        var products = await Client.GetJsonResultAsync<IEnumerable<ProductModel>>
             ("/product?category=all", HttpStatusCode.OK, outputHelper);
         
-        Assert.True(products.Count() >= factory.SharedFixture.OriginalProducts!.Count);  
+        Assert.True(products.Count() >= SharedContext.OriginalProducts!.Count);  
         
-        foreach (var expectedProduct in factory.SharedFixture.OriginalProducts!)
+        foreach (var expectedProduct in SharedContext.OriginalProducts!)
         {
             Assert.Contains(products, p => p.Id == expectedProduct.Id);
         }
@@ -31,10 +30,9 @@ public class ProductControllerTests(CustomApiFactory factory,
     [Fact]
     public async Task GetProductById_Success()
     {
-        var expectedProduct = _faker.PickRandom(factory.SharedFixture.OriginalProducts!);
+        var expectedProduct = _faker.PickRandom(SharedContext.OriginalProducts!);
 
-        var client = factory.CreateClient();
-        var product = await client.GetJsonResultAsync<ProductModel>
+        var product = await Client.GetJsonResultAsync<ProductModel>
             ($"/product/{expectedProduct.Id}", HttpStatusCode.OK, outputHelper);
 
         Assert.Equal(expectedProduct.Id, product.Id);
@@ -47,8 +45,7 @@ public class ProductControllerTests(CustomApiFactory factory,
     [Fact]
     public async Task GetProductById_NotFound()
     {
-        var client = factory.CreateClient();
-        var response = await client.GetAsync("/product/99");
+        var response = await Client.GetAsync("/product/99");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -56,8 +53,7 @@ public class ProductControllerTests(CustomApiFactory factory,
     [Fact]
     public async Task GetProducts_TroubleGivesProblemDetail()
     {
-        var client = factory.CreateClient();
-        var problemDetail = await client.GetJsonResultAsync<ProblemDetails>
+        var problemDetail = await Client.GetJsonResultAsync<ProblemDetails>
             ("/product?category=trouble", HttpStatusCode.InternalServerError, outputHelper);
         
         Assert.NotNull(problemDetail.Title);
@@ -70,14 +66,13 @@ public class ProductControllerTests(CustomApiFactory factory,
     [Fact]
     public async Task PostProductValidationFailure()
     {
-        var client = factory.CreateClient();
-        client.DefaultRequestHeaders.Add("X-Authorization", "Erik Smith");
-        client.DefaultRequestHeaders.Add("X-Test-idp", "Google");
+        Client.DefaultRequestHeaders.Add("X-Authorization", "Erik Smith");
+        Client.DefaultRequestHeaders.Add("X-Test-idp", "Google");
 
         var newProduct = _newProductFaker.Generate();
         newProduct.Name = ""; // invalid
 
-        var problem = await client.PostForJsonResultAsync<ProblemDetails>
+        var problem = await Client.PostForJsonResultAsync<ProblemDetails>
             ("/product", newProduct, HttpStatusCode.BadRequest, outputHelper);
 
         Assert.NotNull(problem);
@@ -89,11 +84,9 @@ public class ProductControllerTests(CustomApiFactory factory,
     [Fact]
     public async Task PostProductAnonymousIsUnauthorized()
     {
-        var client = factory.CreateClient();
-        
         var newProduct = _newProductFaker.Generate();
 
-        var response = await client.PostAsJsonAsync("/product", newProduct);        
+        var response = await Client.PostAsJsonAsync("/product", newProduct);        
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
@@ -104,15 +97,14 @@ public class ProductControllerTests(CustomApiFactory factory,
     [InlineData("Bobby Smith", null)]
     public async Task PostProductForbidden(string name, string? idp)
     {
-        var client = factory.CreateClient();
-        client.DefaultRequestHeaders.Add("X-Authorization", name);
+        Client.DefaultRequestHeaders.Add("X-Authorization", name);
         if (idp != null)
         {
-            client.DefaultRequestHeaders.Add("X-Test-idp", idp);
+            Client.DefaultRequestHeaders.Add("X-Test-idp", idp);
         }
         var newProduct = _newProductFaker.Generate();
 
-        var response = await client.PostAsJsonAsync("/product", newProduct);
+        var response = await Client.PostAsJsonAsync("/product", newProduct);
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
@@ -123,15 +115,14 @@ public class ProductControllerTests(CustomApiFactory factory,
     [InlineData("Alice Smith", "Google")]
     public async Task PostProductSuccess(string name, string? idp)
     {
-        var client = factory.CreateClient();
-        client.DefaultRequestHeaders.Add("X-Authorization", name);
+        Client.DefaultRequestHeaders.Add("X-Authorization", name);
         if (idp != null)
         {
-            client.DefaultRequestHeaders.Add("X-Test-idp", idp);
+            Client.DefaultRequestHeaders.Add("X-Test-idp", idp);
         }
         var newProduct = _newProductFaker.Generate();
 
-        var response = await client.PostForJsonResultAsync<ProductModel>
+        var response = await Client.PostForJsonResultAsync<ProductModel>
             ("/product", newProduct, HttpStatusCode.Created, outputHelper);
 
         Assert.NotNull(response);

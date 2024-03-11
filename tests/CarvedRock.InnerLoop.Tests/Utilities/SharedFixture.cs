@@ -5,6 +5,12 @@ using Testcontainers.PostgreSql;
 using Testcontainers.MsSql;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
+using RestEase;
+using WireMock.Client;
+using WireMock.Server;
+using WireMock.Settings;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
 
 namespace CarvedRock.InnerLoop.Tests.Utilities;
 
@@ -13,8 +19,10 @@ public class SharedFixture : IAsyncLifetime
     // see sqlite docs for more options
     public const string DatabaseName = "InMemTestDb;Mode=Memory;Cache=Shared;";
     public string PostgresConnectionString => _dbContainer.GetConnectionString();
-    public string SqlConnectionString => _sqlContainer.GetConnectionString();    
-    
+    public string SqlConnectionString => _sqlContainer.GetConnectionString();
+
+    private string? _mockServerUrl;
+
     public List<Product>? OriginalProducts { get; private set; }
 
     private LocalContext? _dbContext;
@@ -89,8 +97,31 @@ public class SharedFixture : IAsyncLifetime
         OriginalProducts = await _dbContext.Products.ToListAsync();
     }
 
+    public string ProxyAndRecordApiCalls(Uri apiBaseUrl)
+    {
+        var server = WireMockServer.StartWithAdminInterface();
+        _mockServerUrl = server.Url!;
+
+        server.Given(Request.Create().WithPath("*"))
+            .RespondWith(Response.Create().WithProxy(
+                new ProxyAndRecordSettings
+                {
+                    Url = apiBaseUrl.ToString(),
+                    SaveMapping = true,
+                    SaveMappingToFile = true
+                }));
+
+        return _mockServerUrl;
+    }
+
     public async Task DisposeAsync()
     {
+        if (!string.IsNullOrEmpty(_mockServerUrl))
+        {
+            var api = RestClient.For<IWireMockAdminApi>(_mockServerUrl);
+            var getMappingsResult = await api.GetMappingsAsync();
+        }
+
         if (_dbContext != null)
         {
             await _dbContext.DisposeAsync();
