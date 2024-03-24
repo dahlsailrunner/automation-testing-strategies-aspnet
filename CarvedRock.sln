@@ -14,8 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{52B78FD2-1E54-4EE1-897C-F3BD6F4945A5}"
 	ProjectSection(SolutionItems) = preProject
 		CarvedRock.slnLaunch = CarvedRock.slnLaunch
-		readme.md = readme.md
 		local-coverage.ps1 = local-coverage.ps1
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.Core", "CarvedRock.Core\CarvedRock.Core.csproj", "{B93304E2-F170-47D6-98AC-6FEF0E5F99E0}"
@@ -32,12 +32,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql-container", "sql-contai
 		sql-container\CreateDatabase.sql = sql-container\CreateDatabase.sql
 		sql-container\entrypoint.sh = sql-container\entrypoint.sh
 		sql-container\InitializeDatabase.sql = sql-container\InitializeDatabase.sql
-		sql-container\readme.md = sql-container\readme.md
 		sql-container\InsertSomeData.sql = sql-container\InsertSomeData.sql
+		sql-container\readme.md = sql-container\readme.md
 		sql-container\setup.sh = sql-container\setup.sh
-		sql-container\wait-for-it.sh = sql-container\wait-for-it.sh
 		sql-container\sql.Dockerfile = sql-container\sql.Dockerfile
+		sql-container\wait-for-it.sh = sql-container\wait-for-it.sh
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.InnerLoop.WebApp.Tests", "tests\CarvedRock.InnerLoop.WebApp.Tests\CarvedRock.InnerLoop.WebApp.Tests.csproj", "{C02063F7-A97F-4B8B-9DD9-A514A521F7D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{D0F82906-15EA-4776-BBB5-A33CECE77282}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WireMockRecorder", "tools\WireMockRecorder\WireMockRecorder.csproj", "{54CCB951-415C-4344-8923-59D8236DB893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WireMockApiServer", "tools\WireMockApiServer\WireMockApiServer.csproj", "{A51C6CD3-BDA6-40F4-89D5-98F1153EC04B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,12 +77,27 @@ Global
 		{89E7E9CE-70BC-49A5-B6EB-2A545AFBE267}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89E7E9CE-70BC-49A5-B6EB-2A545AFBE267}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89E7E9CE-70BC-49A5-B6EB-2A545AFBE267}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C02063F7-A97F-4B8B-9DD9-A514A521F7D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C02063F7-A97F-4B8B-9DD9-A514A521F7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C02063F7-A97F-4B8B-9DD9-A514A521F7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C02063F7-A97F-4B8B-9DD9-A514A521F7D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54CCB951-415C-4344-8923-59D8236DB893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54CCB951-415C-4344-8923-59D8236DB893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54CCB951-415C-4344-8923-59D8236DB893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54CCB951-415C-4344-8923-59D8236DB893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A51C6CD3-BDA6-40F4-89D5-98F1153EC04B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A51C6CD3-BDA6-40F4-89D5-98F1153EC04B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A51C6CD3-BDA6-40F4-89D5-98F1153EC04B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A51C6CD3-BDA6-40F4-89D5-98F1153EC04B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{89E7E9CE-70BC-49A5-B6EB-2A545AFBE267} = {377907D2-D023-4282-BF01-B9EFC0CBD59C}
+		{C02063F7-A97F-4B8B-9DD9-A514A521F7D9} = {377907D2-D023-4282-BF01-B9EFC0CBD59C}
+		{54CCB951-415C-4344-8923-59D8236DB893} = {D0F82906-15EA-4776-BBB5-A33CECE77282}
+		{A51C6CD3-BDA6-40F4-89D5-98F1153EC04B} = {D0F82906-15EA-4776-BBB5-A33CECE77282}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FAE1B7C4-22B1-4A77-B281-DF647AE2900D}

@@ -51,8 +51,8 @@ public class ProductValidatorTests(ITestOutputHelper outputHelper)
     [InlineData(" ", "Name is required.")]
     [InlineData("duplicate", "A product with the same name already exists.")]
     [InlineData("__too_long__", "Name must not exceed 50 characters.")]
-    public async Task NameValiationErrors(string nameToValidate, string errorMessage)
-    {
+    public async Task NameValidationErrors(string nameToValidate, string errorMessage)
+    { 
         //arrange --------------------
         var newProduct = new NewProductModel
         {

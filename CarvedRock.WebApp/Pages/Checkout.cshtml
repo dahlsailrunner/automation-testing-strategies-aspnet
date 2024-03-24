@@ -3,7 +3,7 @@
 
 <h2>Confirmation will be sent to: @Model.EmailAddress</h2>
 
-<form class="form" method="post">
+<form id="checkout" class="form" method="post">
     <table class="table">
         <thead>
             <tr>
@@ -57,7 +57,7 @@
                 <td></td>
                 <td></td>
                 <td><input type="submit" class="btn btn-danger" value="Cancel Order / Clear Cart" asp-page-handler="CancelOrder" /></td>
-                <td><input type="submit" class="btn btn-warning" value="Submit Order" asp-page-handler="SubmitOrder" /></td>
+                <td><input id="submitCheckout" type="submit" class="btn btn-warning" value="Submit Order" asp-page-handler="SubmitOrder" /></td>
             </tr>
         </tbody>
     </table>

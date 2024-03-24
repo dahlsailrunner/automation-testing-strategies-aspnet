@@ -112,7 +112,7 @@ app.MapHealthChecks("health").AllowAnonymous();
 app.Run();
 
 [ExcludeFromCodeCoverage]
-void SetupDevelopment(WebApplication app)
+static void SetupDevelopment(WebApplication app)
 {
     using (var scope = app.Services.CreateScope())
     {
@@ -131,4 +131,3 @@ void SetupDevelopment(WebApplication app)
 }
 
 public partial class Program { } // used for integration tests
-

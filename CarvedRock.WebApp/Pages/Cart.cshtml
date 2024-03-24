@@ -5,7 +5,7 @@
 
 @if(Model.CartContents.Count == 0)
 {
-    <p>Your cart is empty.  Go add some items!</p>
+    <p>Your cart is empty. Go add some items!</p>
 }
 else
 { 
@@ -57,7 +57,7 @@ else
             <td></td>
             <td></td>
             <td><strong>Grand Total</strong></td>
-                    <td><strong>@string.Format("{0:C}", Model.CartTotal)</strong></td>
+            <td><strong id="grand-total">@string.Format("{0:C}", Model.CartTotal)</strong></td>
         </tr>
         <tr>
             <td></td>

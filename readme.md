@@ -10,7 +10,7 @@ The solution uses two services that it expects to be running locally. The simple
 run these services is to use Docker.  The following commands will start the services.
 
 ```bash
-docker pull rnwood/smpt4dev
+docker pull rnwood/smtp4dev
 docker run --rm -d --name fakemail -p 3000:80 -p 2525:25 rnwood/smtp4dev
 
 docker pull datalust/seq
@@ -171,3 +171,9 @@ following PowerShell command:
 ```bash
 gci -include TestResults,coverage -recurse | remove-item -force -recurse
 ```
+
+##  AngleSharp and UI Selectors
+
+- [AngleSharp](https://anglesharp.github.io/)
+- [Selectors Reference](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors)
+

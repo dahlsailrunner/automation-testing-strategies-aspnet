@@ -59,7 +59,7 @@
                 @Html.DisplayFor(modelItem => product.Price)               
             </td>
             <td>
-                <button type="button" class="btn btn-warning" onclick="addItemToCart(@product.Id)">Add to Cart</button>
+                <button id="add-btn-@product.Id" type="button" class="btn btn-warning" onclick="addItemToCart(@product.Id)">Add to Cart</button>
             </td>
         </tr>
     }

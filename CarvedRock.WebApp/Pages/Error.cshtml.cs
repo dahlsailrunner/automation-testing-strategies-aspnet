@@ -14,9 +14,7 @@ public class ErrorModel(ILogger<ErrorModel> logger) : PageModel
     public Activity? CurrentActivity { get; set; }
     public string? TraceId { get; set; }
 
-    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-
-    private readonly ILogger<ErrorModel> _logger = logger;
+    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);    
 
     public void OnGet()
     {
@@ -25,6 +23,6 @@ public class ErrorModel(ILogger<ErrorModel> logger) : PageModel
         TraceId = HttpContext.TraceIdentifier;
         
         var userName = User.Identity?.IsAuthenticated ?? false? User.Identity.Name : "";
-        _logger.LogWarning("User {userName} experienced an error.", userName);
+        logger.LogWarning("User {userName} experienced an error.", userName);
     }
 }
