@@ -22,6 +22,8 @@ var settings = new WireMockServerSettings
 
 var server = WireMockServer.Start(settings);
 
+var secret = config.GetValue<string>("MovieApiKey");
+
 using var client = new HttpClient() { BaseAddress = new Uri(server.Urls[0]) };
 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {config.GetValue<string>("MovieApiKey")}");
 

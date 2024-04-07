@@ -45,7 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{D0F82906
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WireMockRecorder", "tools\WireMockRecorder\WireMockRecorder.csproj", "{54CCB951-415C-4344-8923-59D8236DB893}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WireMockApiServer", "tools\WireMockApiServer\WireMockApiServer.csproj", "{A51C6CD3-BDA6-40F4-89D5-98F1153EC04B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WireMockApiServer", "tools\WireMockApiServer\WireMockApiServer.csproj", "{A51C6CD3-BDA6-40F4-89D5-98F1153EC04B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
