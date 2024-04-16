@@ -9,47 +9,35 @@ namespace CarvedRock.EndToEnd.Tests;
 public class CancelCheckoutTests : BaseTest
 {
     [Test]
-    public async Task LoggedInCheckOutCancellation()
+    public async Task LoggedInCheckoutCancellation()
     {
-        await Page.GotoAsync("https://localhost:7224/");
-        await Page.GetByRole(AriaRole.Link, new() { NameString = "Sign in" }).ClickAsync();
-        await Page.WaitForURLAsync("https://demo.duendesoftware.com/Account/Login?**");
+        await Page.GotoAsync(BaseUrl);
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Sign in" }).ClickAsync();
         await Page.GetByPlaceholder("Username").ClickAsync();
         await Page.GetByPlaceholder("Username").FillAsync("alice");
-        await Page.GetByPlaceholder("Username").PressAsync("Tab");        
+        await Page.GetByPlaceholder("Username").PressAsync("Tab");
         await Page.GetByPlaceholder("Password").FillAsync("alice");
-        await Page.GetByRole(AriaRole.Button, new() { NameString = "Login" }).ClickAsync();
-        await Page.WaitForURLAsync("https://localhost:7224/");
+        await Page.GetByPlaceholder("Password").PressAsync("Tab");
+        await Page.GetByLabel("Remember My Login").PressAsync("Tab");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Login" }).ClickAsync();
 
-        // Check that the user is logged in
         await Expect(Page.GetByText("AliceSmith@email.com Sign Out")).ToBeVisibleAsync();
 
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Footwear" }).ClickAsync();
+        await Page.Locator("#add-btn-1").ClickAsync();
+        await Page.Locator("#add-btn-3").ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Kayaks" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Add to Cart" }).ClickAsync();
 
-        await Page.GetByRole(AriaRole.Link, new() { NameString = "Footwear" }).ClickAsync();
-        await Page.WaitForURLAsync("https://localhost:7224/Listing?cat=boots");
+        // indirectly verifies the cart count
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Cart (3)" }).ClickAsync();
 
-        await Page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex("Woodsman") })
-            .GetByRole(AriaRole.Button, new() { NameString = "Add to Cart" }).ClickAsync();
-
-        await Page.GetByRole(AriaRole.Link, new() { NameString = "Kayaks" }).ClickAsync();
-        await Page.WaitForURLAsync("https://localhost:7224/Listing?cat=kayak");
-
-        await Page.GetByRole(AriaRole.Button, new() { NameString = "Add to Cart" }).ClickAsync();
-
-        await Page.ScreenshotAsync(new PageScreenshotOptions { Path = "cart.png" });
         var executionDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        var screenshotPath = Path.Combine(executionDirectory!, "cart.png");
-        Console.WriteLine($"Screenshot saved to {screenshotPath}");
+        await Page.ScreenshotAsync(new PageScreenshotOptions { Path = "cart.png" });
+        Console.WriteLine($"Screenshot saved to {Path.Combine(executionDirectory!, "cart.png")}");
 
-        // indirectly checks that cart has been updated
-        await Page.GetByRole(AriaRole.Link, new() { NameString = "Cart (2)" }).ClickAsync();
-        await Page.WaitForURLAsync("https://localhost:7224/Cart");
-
-        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cancel Order / Clear Cart" }).ClickAsync();
-        await Page.WaitForURLAsync("https://localhost:7224/");
-
-        // Check that the cart is empty
-        await Expect(Page.GetByRole(AriaRole.Link, new() { NameString = "Cart (0)" })).ToBeVisibleAsync();
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Cancel Order / Clear Cart" }).ClickAsync();
+        await Expect(Page.Locator("#carvedrockcart")).ToContainTextAsync("(0)");
     }
 
     [SetUp]
