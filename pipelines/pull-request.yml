@@ -31,3 +31,5 @@ steps:
     summaryFileLocation: '$(Agent.TempDirectory)/**/*cobertura.xml' 
     reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
 
+- publish: $(Build.SourcesDirectory)/CodeCoverage
+  artifact: CoverageReports
