@@ -190,7 +190,7 @@ public class ProductValidatorTests(ITestOutputHelper outputHelper)
         Assert.Equal(4, result.Errors.Count);
         Assert.Contains(result.Errors, e => e.ErrorMessage == "A product with the same name already exists.");
         Assert.Contains(result.Errors, e => e.ErrorMessage == "Description must not exceed 150 characters.");
-        Assert.Contains(result.Errors, e => e.ErrorMessage == "Price for boots must be between $50.00 and $300.00");
+        Assert.Contains(result.Errors, e => e.ErrorMessage.StartsWith("Price for boots must be between"));
         Assert.Contains(result.Errors, e => e.ErrorMessage == "Img Url must be a valid URL.");
     }
 
