@@ -13,6 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.WebApp", "Carved
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{52B78FD2-1E54-4EE1-897C-F3BD6F4945A5}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		CarvedRock.slnLaunch = CarvedRock.slnLaunch
 		local-coverage.ps1 = local-coverage.ps1
 		readme.md = readme.md

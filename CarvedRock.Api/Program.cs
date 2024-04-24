@@ -26,7 +26,7 @@ builder.Logging.ClearProviders();
 builder.Host.UseSerilog((context, loggerConfig) => {
     loggerConfig
     .ReadFrom.Configuration(context.Configuration)
-    .WriteTo.Console()
+    //.WriteTo.Console()
     .Enrich.WithExceptionDetails()
     .Enrich.FromLogContext()
     .Enrich.With<ActivityEnricher>()
@@ -94,6 +94,13 @@ builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
 builder.Services.AddValidatorsFromAssemblyContaining<NewProductValidator>();
 
 var app = builder.Build();
+app.UseSerilogRequestLogging(options =>
+{
+    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+    {
+        diagnosticContext.Set("client_id", httpContext.User.Claims.FirstOrDefault(c => c.Type == "client_id")?.Value);
+    };
+});
 
 app.UseExceptionHandler();  
 

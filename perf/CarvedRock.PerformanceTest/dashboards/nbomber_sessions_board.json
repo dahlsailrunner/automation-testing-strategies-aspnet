@@ -1,0 +1,283 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Session ID"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/nbomber/nbomber?var-test_suite=${__data.fields[\"Test Suite\"]}&var-test_name=${__data.fields[\"Test Name\"]}&var-session_id=${__value.raw}﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿&﻿var-current_operation=﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿${__data.fields[\"Current Operation\"]}﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿&from=﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿${__from}﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿&to=now&refresh=5s"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Current Operation"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "bombing": {
+                        "color": "blue",
+                        "index": 0,
+                        "text": "bombing"
+                      },
+                      "complete": {
+                        "color": "green",
+                        "index": 1,
+                        "text": "complete"
+                      },
+                      "init": {
+                        "color": "purple",
+                        "index": 2,
+                        "text": "init"
+                      },
+                      "stop": {
+                        "color": "red",
+                        "index": 3,
+                        "text": "stop"
+                      },
+                      "warmup": {
+                        "color": "yellow",
+                        "index": 4,
+                        "text": "warmup"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Session ID"
+          }
+        ]
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "nbomber",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT \"session_id\", \"current_operation\" FROM \"nbomber\" WHERE $timeFilter GROUP BY \"test_suite\", \"test_name\"",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "session_id"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "NBomber Sessions",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "cluster_id": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "current_operation": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "node_current_operation": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "session_id": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "test_name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "test_suite": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "cluster_id": 2,
+              "current_operation (lastNotNull)": 1,
+              "session_id": 0,
+              "test_name": 4,
+              "test_suite": 3
+            },
+            "renameByName": {             
+              "current_operation": "Current Operation",
+              "current_operation (lastNotNull)": "Current Operation",
+              "node_current_operation (lastNotNull)": "Current Operation",
+              "session_id": "Session ID",
+              "test_name": "Test Name",
+              "test_suite": "Test Suite"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "hide": 2,
+        "name": "DS_INFLUXDB",
+        "query": "influxdb",
+        "skipUrlSync": false,
+        "type": "constant"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-8h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "NBomber Sessions",
+  "uid": "nbomber_sessions",
+  "version": 1,
+  "weekStart": ""
+}

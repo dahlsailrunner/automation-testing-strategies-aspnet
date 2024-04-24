@@ -1,0 +1,3193 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_INFLUXDB",
+      "label": "InfluxDB",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.2"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1675342645222,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 97,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.5.2",
+      "targets": [        
+        {
+          "alias": "CPU count",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "nbomber",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"cluster.node_cpu_count\") as \"cpu count\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"current_operation\" = 'bombing') GROUP BY time(1d)",
+          "rawQuery": true,
+          "refId": "cores_count",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "cluster_node"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Cluster Info",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {}
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "cpu count": "CPU count",
+              "node count": "Node count"
+            }
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "It displays stats only for current_operation = complete",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status code"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 139
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 46,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.5.2",
+      "targets": [
+        {
+          "datasource": "${DS_INFLUXDB}",
+          "groupBy": [
+            {
+              "params": [
+                "status_code"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "nbomber",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"status_code.count\") as \"count\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"current_operation\" = 'complete') GROUP BY time(1d), \"scenario\", \"status_code.status\"",
+          "rawQuery": true,
+          "refId": "count",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "status_code.count"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "status_code.is_error"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "test_suite",
+              "operator": "=~",
+              "value": "/^$test_suite$/"
+            },
+            {
+              "condition": "AND",
+              "key": "test_name",
+              "operator": "=~",
+              "value": "/^$test_name$/"
+            },
+            {
+              "condition": "AND",
+              "key": "scenario",
+              "operator": "=~",
+              "value": "/^$scenario$/"
+            },
+            {
+              "condition": "AND",
+              "key": "step",
+              "operator": "=~",
+              "value": "/^$step$/"
+            },
+            {
+              "condition": "AND",
+              "key": "operation",
+              "operator": "=",
+              "value": "complete"
+            }
+          ]
+        }
+      ],
+      "title": "scenario status codes",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Time": {
+                "aggregations": []
+              },
+              "count": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "nbomber.is error {scenario: http_scenario, status_code.status: -101}": {
+                "aggregations": [
+                  "last"
+                ]
+              },
+              "nbomber.is error {scenario: http_scenario, status_code.status: OK}": {
+                "aggregations": []
+              },
+              "scenario": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "status_code.status": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "count": "",
+              "status_code.status": "status"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "jBqDkjlnk"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 4,
+      "panels": [],
+      "repeat": "scenario",
+      "title": "$scenario",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "inspect": false,
+            "minWidth": 40
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "request count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "scenario"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "step"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "load value"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 78,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"simulation.value\") as \"load value\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "load_value",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"ok.request.count\") as \"request count\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "req count",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.request.rps\") as \"rps\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "rps",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.min\") as \"min\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "min",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.mean\") as \"mean\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "mean",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.max\") as \"max\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "max",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.percent50\") as \"p50\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "p50",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.percent75\") as \"p75\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "p75",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.percent95\") as \"p95\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "p95",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.percent99\") as \"p99\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "p99",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.stddev\") as \"stddev\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "stddev",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.datatransfer.min\") as \"data_min\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "data_min",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.datatransfer.mean\") as \"data_mean\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1m), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "data_mean",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.datatransfer.max\") as \"data_max\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1m), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "data_max",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.datatransfer.all\") as \"data_all\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1m), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "data_all",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "OK Stats",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "data_all": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "data_max": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "data_mean": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "data_min": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "load value": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "max": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "mean": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "min": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "p50": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "p75": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "p95": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "p99": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "request count": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "rps": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "scenario": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "stddev": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "step": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "data_all (lastNotNull)": 16,
+              "data_max (lastNotNull)": 15,
+              "data_mean (lastNotNull)": 14,
+              "data_min (lastNotNull)": 13,
+              "load value (lastNotNull)": 2,
+              "max (lastNotNull)": 7,
+              "mean (lastNotNull)": 6,
+              "min (lastNotNull)": 5,
+              "p50 (lastNotNull)": 8,
+              "p75 (lastNotNull)": 9,
+              "p95 (lastNotNull)": 10,
+              "p99 (lastNotNull)": 11,
+              "request count (lastNotNull)": 3,
+              "rps (lastNotNull)": 4,
+              "scenario": 0,
+              "stddev (lastNotNull)": 12,
+              "step": 1
+            },
+            "renameByName": {
+              "data_all (lastNotNull)": "data all",
+              "data_max (lastNotNull)": "data max",
+              "data_mean (lastNotNull)": "data mean",
+              "data_min (lastNotNull)": "data min",
+              "load value (lastNotNull)": "load value",
+              "max (lastNotNull)": "max (ms)",
+              "mean (lastNotNull)": "mean (ms)",
+              "min (last)": "min",
+              "min (lastNotNull)": "min (ms)",
+              "p50 (lastNotNull)": "p50 (ms)",
+              "p75 (lastNotNull)": "p75 (ms)",
+              "p95 (lastNotNull)": "p95 (ms)",
+              "p99 (lastNotNull)": "p99 (ms)",
+              "request count (lastNotNull)": "request count",
+              "rps (lastNotNull)": "RPS",
+              "scenario": "",
+              "stddev (lastNotNull)": "StdDev",
+              "step": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "id": 108,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "ok RPS",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "nbomber",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.request.rps\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "ok_rps",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "fail RPS",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.request.rps\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "fail_rps",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "load",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"simulation.value\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "load",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Throughput",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "It displays stats only for current_operation = complete",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "t > 800 and t < 1200"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "yellow",
+                      "value": null
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "t >= 1200"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 13
+      },
+      "id": 44,
+      "options": {
+        "displayMode": "basic",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "8.5.2",
+      "targets": [
+        {
+          "alias": "t <= 800",
+          "datasource": "${DS_INFLUXDB}",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "nbomber",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"latency_count.less_or_eq_800\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"current_operation\" = 'complete') GROUP BY time(1d)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_count.less_or_eq_800"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "test_suite",
+              "operator": "=~",
+              "value": "/^$test_suite$/"
+            },
+            {
+              "condition": "AND",
+              "key": "test_name",
+              "operator": "=~",
+              "value": "/^$test_name$/"
+            },
+            {
+              "condition": "AND",
+              "key": "scenario",
+              "operator": "=~",
+              "value": "/^$scenario$/"
+            },
+            {
+              "condition": "AND",
+              "key": "step",
+              "operator": "=~",
+              "value": "/^$step$/"
+            },
+            {
+              "condition": "AND",
+              "key": "operation",
+              "operator": "=",
+              "value": "complete"
+            }
+          ]
+        },
+        {
+          "alias": "t > 800 and t < 1200",
+          "datasource": "${DS_INFLUXDB}",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "nbomber",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"latency_count.more_800_less_1200\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"current_operation\" = 'complete') GROUP BY time(1d)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_count.more_800_less_1200"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "test_suite",
+              "operator": "=~",
+              "value": "/^$test_suite$/"
+            },
+            {
+              "condition": "AND",
+              "key": "test_name",
+              "operator": "=~",
+              "value": "/^$test_name$/"
+            },
+            {
+              "condition": "AND",
+              "key": "scenario",
+              "operator": "=~",
+              "value": "/^$scenario$/"
+            },
+            {
+              "condition": "AND",
+              "key": "step",
+              "operator": "=~",
+              "value": "/^$step$/"
+            },
+            {
+              "condition": "AND",
+              "key": "operation",
+              "operator": "=",
+              "value": "complete"
+            }
+          ]
+        },
+        {
+          "alias": "t >= 1200",
+          "datasource": "${DS_INFLUXDB}",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "nbomber",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"latency_count.more_or_eq_1200\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"current_operation\" = 'complete') GROUP BY time(1d)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_count.more_or_eq_1200"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "test_suite",
+              "operator": "=~",
+              "value": "/^$test_suite$/"
+            },
+            {
+              "condition": "AND",
+              "key": "test_name",
+              "operator": "=~",
+              "value": "/^$test_name$/"
+            },
+            {
+              "condition": "AND",
+              "key": "scenario",
+              "operator": "=~",
+              "value": "/^$scenario$/"
+            },
+            {
+              "condition": "AND",
+              "key": "step",
+              "operator": "=~",
+              "value": "/^$step$/"
+            },
+            {
+              "condition": "AND",
+              "key": "operation",
+              "operator": "=",
+              "value": "complete"
+            }
+          ]
+        }
+      ],
+      "title": "Scenario latency indicators",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 119,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "min",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.min\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" = 'global information' AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "min",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "max",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.max\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" = 'global information' AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "max",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "p50",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.percent50\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" = 'global information' AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "p50",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "p99",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.latency.percent99\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" = 'global information' AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "p99",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 19
+      },
+      "id": 120,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "ok RPS",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "nbomber",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"ok.request.rps\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" = 'global information' AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "ok_rps",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "fail RPS",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.request.rps\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" = 'global information' AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "fail_rps",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "load",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"simulation.value\") FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" = 'global information' AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1s) fill(none)",
+          "rawQuery": true,
+          "refId": "load",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Data transfer",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "filterable": false,
+            "inspect": false,
+            "minWidth": 40
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "scenario"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "step"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "request count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 93,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"fail.request.count\") as \"request count\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "req count",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.request.rps\") as \"rps\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "rps",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.latency.min\") as \"min\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "min",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.latency.mean\") as \"mean\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "mean",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.latency.max\") as \"max\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "max",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.latency.percent50\") as \"p50\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "p50",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.latency.percent75\") as \"p75\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "p75",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.latency.percent95\") as \"p95\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "p95",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.latency.percent99\") as \"p99\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "p99",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.latency.stddev\") as \"stddev\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "stddev",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.datatransfer.min\") as \"data_min\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "data_min",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.datatransfer.mean\") as \"data_mean\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "data_mean",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.datatransfer.max\") as \"data_max\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "data_max",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"fail.datatransfer.all\") as \"data_all\" FROM \"nbomber\" WHERE (\"session_id\" =~ /^$session_id$/ AND \"test_suite\" =~ /^$test_suite$/ AND \"test_name\" =~ /^$test_name$/ AND \"scenario\" =~ /^$scenario$/ AND \"step\" =~ /^$step$/ AND \"current_operation\" =~ /^$current_operation$/) AND $timeFilter GROUP BY time(1d), \"step\", \"scenario\"",
+          "rawQuery": true,
+          "refId": "data_all",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "FAIL Stats",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "data_all": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "data_max": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "data_mean": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "data_min": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "max": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "mean": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "min": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "p50": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "p75": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "p95": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "p99": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "request count": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "rps": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "scenario": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "stddev": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "step": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "data_all (lastNotNull)": "data all",
+              "data_max (lastNotNull)": "data max",
+              "data_mean (lastNotNull)": "data mean",
+              "data_min (lastNotNull)": "data min",
+              "max (lastNotNull)": "max (ms)",
+              "mean (lastNotNull)": "mean (ms)",
+              "min (last)": "min",
+              "min (lastNotNull)": "min (ms)",
+              "p50 (lastNotNull)": "p50 (ms)",
+              "p75 (lastNotNull)": "p75 (ms)",
+              "p95 (lastNotNull)": "p95 (ms)",
+              "p99 (lastNotNull)": "p99 (ms)",
+              "request count (lastNotNull)": "request count",
+              "rps (lastNotNull)": "RPS",
+              "stddev (lastNotNull)": "StdDev",
+              "step": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "session id",
+        "multi": false,
+        "name": "session_id",
+        "options": [],
+        "query": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },      
+      {
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB}"
+        },
+        "definition": "SHOW TAG VALUES with KEY = \"test_suite\"",
+        "hide": 0,
+        "includeAll": false,
+        "label": "test suite",
+        "multi": false,
+        "name": "test_suite",
+        "options": [],
+        "query": "SHOW TAG VALUES with KEY = \"test_suite\"",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB}"
+        },
+        "definition": "SHOW TAG VALUES with KEY = \"test_name\" WHERE test_suite =~ /^$test_suite$/",
+        "hide": 0,
+        "includeAll": false,
+        "label": "test name",
+        "multi": false,
+        "name": "test_name",
+        "options": [],
+        "query": "SHOW TAG VALUES with KEY = \"test_name\" WHERE test_suite =~ /^$test_suite$/",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "bombing"
+          ],
+          "value": [
+            "bombing"
+          ]
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "current operation",
+        "multi": true,
+        "name": "current_operation",
+        "options": [
+          {
+            "selected": false,
+            "text": "warmup",
+            "value": "warmup"
+          },
+          {
+            "selected": true,
+            "text": "bombing",
+            "value": "bombing"
+          },
+          {
+            "selected": false,
+            "text": "complete",
+            "value": "complete"
+          }
+        ],
+        "query": "warmup, bombing, complete",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB}"
+        },
+        "definition": "SHOW TAG VALUES with KEY = \"scenario\" WHERE test_suite =~ /^$test_suite$/ AND test_name =~ /^$test_name$/",
+        "hide": 0,
+        "includeAll": true,
+        "label": "scenario",
+        "multi": true,
+        "name": "scenario",
+        "options": [],
+        "query": "SHOW TAG VALUES with KEY = \"scenario\" WHERE test_suite =~ /^$test_suite$/ AND test_name =~ /^$test_name$/",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB}"
+        },
+        "definition": "SHOW TAG VALUES with KEY = \"step\" WHERE test_suite =~ /^$test_suite$/ AND test_name =~ /^$test_name$/ AND scenario =~ /^$scenario$/",
+        "hide": 0,
+        "includeAll": true,
+        "label": "step",
+        "multi": true,
+        "name": "step",
+        "options": [],
+        "query": "SHOW TAG VALUES with KEY = \"step\" WHERE test_suite =~ /^$test_suite$/ AND test_name =~ /^$test_name$/ AND scenario =~ /^$scenario$/",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "2023-02-02T12:52:22.944Z",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "NBomber",
+  "uid": "nbomber",
+  "version": 2,
+  "weekStart": ""
+}
