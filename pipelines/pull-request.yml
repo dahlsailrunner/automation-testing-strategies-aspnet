@@ -14,7 +14,7 @@ steps:
   displayName: 'Run tests'
   inputs:
     command: 'test'    
-    arguments: '--settings tests/tests.runsettings' 
+    arguments: '--settings tests/carvedrock.runsettings' 
     publishTestResults: true
 
 - task: PublishCodeCoverageResults@2
