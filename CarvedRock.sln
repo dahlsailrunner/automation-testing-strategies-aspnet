@@ -48,6 +48,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WireMockRecorder", "tools\W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WireMockApiServer", "tools\WireMockApiServer\WireMockApiServer.csproj", "{A51C6CD3-BDA6-40F4-89D5-98F1153EC04B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{908EEF2C-4702-4C6D-99FE-FC7843D556D5}"
+	ProjectSection(SolutionItems) = preProject
+		pipelines\pull-request.yml = pipelines\pull-request.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
