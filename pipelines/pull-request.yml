@@ -22,7 +22,7 @@ steps:
   inputs:
     reports: '$(Agent.TempDirectory)/**/*cobertura.xml'
     targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
-    reporttypes: 'HtmlInline\_AzurePipelines;Cobertura;Badges'    
+    reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'    
 
 - task: PublishCodeCoverageResults@2
   displayName: 'Publish code coverage: Azure DevOps'
