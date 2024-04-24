@@ -17,7 +17,7 @@ steps:
     arguments: '--settings tests/carvedrock.runsettings' 
     publishTestResults: true
 
-- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+- task: reportgenerator@5
   displayName: ReportGenerator
   inputs:
     reports: '$(Agent.TempDirectory)/**/*cobertura.xml'
