@@ -17,9 +17,17 @@ steps:
     arguments: '--settings tests/carvedrock.runsettings' 
     publishTestResults: true
 
+- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+  displayName: ReportGenerator
+  inputs:
+    reports: '$(Agent.TempDirectory)/**/*cobertura.xml'
+    targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
+    reporttypes: 'HtmlInline\_AzurePipelines;Cobertura;Badges'    
+
 - task: PublishCodeCoverageResults@2
   displayName: 'Publish code coverage: Azure DevOps'
   inputs:
     codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(Agent.TempDirectory)/**/*cobertura.xml'    
+    summaryFileLocation: '$(Agent.TempDirectory)/**/*cobertura.xml' 
+    reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
 
