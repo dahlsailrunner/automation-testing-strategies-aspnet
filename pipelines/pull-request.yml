@@ -1,7 +1,8 @@
 pool:
   vmImage: ubuntu-latest
 name: $(Date:yyyyMMdd)$(Rev:.r)-$(SourceBranchName)
-trigger: none
+pr:
+- main
 
 steps:
 - task: UseDotNet@2
