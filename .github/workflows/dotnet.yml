@@ -59,4 +59,11 @@ jobs:
         name: test-results
         path: ./*.html
         retention-days: 5
+
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/linux@v2
+      if: always()
+      with:
+        files: |
+          Cobertura.xml
                 
