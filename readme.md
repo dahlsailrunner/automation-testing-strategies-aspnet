@@ -1,4 +1,5 @@
-![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/knowyourtoolset/automation-testing-strategies/21)
+![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/knowyourtoolset/automation-testing-strategies/21) ![Azure DevOps tests](https://img.shields.io/azure-devops/tests/knowyourtoolset/automation-testing-strategies/21)
+
 
 # Automated Testing Strategies for ASP.NET Core
 
