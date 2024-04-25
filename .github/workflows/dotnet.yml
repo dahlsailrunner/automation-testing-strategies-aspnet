@@ -51,5 +51,12 @@ jobs:
 
     - name: Generate list using Markdown
       run: |
-        cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY                    
+        cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY   
+
+    - name: Upload Test Result Files
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: index.html
+        retention-days: 5
                 
