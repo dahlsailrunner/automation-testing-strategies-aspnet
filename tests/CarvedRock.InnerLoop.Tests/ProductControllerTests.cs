@@ -69,7 +69,7 @@ public class ProductControllerTests(CustomApiFactory factory,
         Client.DefaultRequestHeaders.Add("X-Authorization", "Erik Smith");
         Client.DefaultRequestHeaders.Add("X-Test-idp", "Google");
 
-        var newProduct = _newProductFaker.Generate();
+        var newProduct = SharedContext.NewProductFaker.Generate();
         newProduct.Name = ""; // invalid
 
         var problem = await Client.PostForJsonResultAsync<ProblemDetails>
@@ -84,7 +84,7 @@ public class ProductControllerTests(CustomApiFactory factory,
     [Fact]
     public async Task PostProductAnonymousIsUnauthorized()
     {
-        var newProduct = _newProductFaker.Generate();
+        var newProduct = SharedContext.NewProductFaker.Generate();
 
         var response = await Client.PostAsJsonAsync("/product", newProduct);        
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -102,7 +102,7 @@ public class ProductControllerTests(CustomApiFactory factory,
         {
             Client.DefaultRequestHeaders.Add("X-Test-idp", idp);
         }
-        var newProduct = _newProductFaker.Generate();
+        var newProduct = SharedContext.NewProductFaker.Generate();
 
         var response = await Client.PostAsJsonAsync("/product", newProduct);
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
@@ -120,7 +120,7 @@ public class ProductControllerTests(CustomApiFactory factory,
         {
             Client.DefaultRequestHeaders.Add("X-Test-idp", idp);
         }
-        var newProduct = _newProductFaker.Generate();
+        var newProduct = SharedContext.NewProductFaker.Generate();
 
         var response = await Client.PostForJsonResultAsync<ProductModel>
             ("/product", newProduct, HttpStatusCode.Created, outputHelper);
@@ -129,14 +129,6 @@ public class ProductControllerTests(CustomApiFactory factory,
         Assert.Equal(newProduct.Name, response.Name);
     }
 
-    private readonly Faker<NewProductModel> _newProductFaker = new Faker<NewProductModel>()
-        .RuleFor(p => p.Name, f => f.Commerce.ProductName())
-        .RuleFor(p => p.Description, f => f.Commerce.ProductDescription())
-        .RuleFor(p => p.Category, f => f.PickRandom("boots", "equip", "kayak"))
-        .RuleFor(p => p.Price, (f, p) =>
-                p.Category == "boots" ? f.Random.Double(50, 300) :
-                p.Category == "equip" ? f.Random.Double(20, 150) :
-                p.Category == "kayak" ? f.Random.Double(100, 500) : 0)
-        .RuleFor(p => p.ImgUrl, f => f.Image.PicsumUrl());
+    
 }
 
