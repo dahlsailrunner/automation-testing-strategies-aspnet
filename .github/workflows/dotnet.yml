@@ -32,11 +32,8 @@ jobs:
     # uses: danielpalme/ReportGenerator-GitHub-Action@2a2d60ea1c7e811f54684179af6ac1ae8c1ce69a
       uses: danielpalme/ReportGenerator-GitHub-Action@5.2.5
       with:
-        # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
-        reports: '${GITHUB_WORKSPACE}/tests/**/*coverage.xml' # default is coverage.xml
-        # The directory where the generated report should be saved.
-        targetdir: 'coveragereport' # default is coveragereport
-        # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlSummary, Html_BlueRed_Summary, JsonSummary, Latex, LatexSummary, lcov, MHtml, SvgChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
+        reports: "**/*.cobertura.xml" # REQUIRED # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
+        targetdir: "${{ github.workspace }}" # REQUIRED # The directory where the generated report should be saved.
         reporttypes: 'HtmlInline;Cobertura'
         
           
