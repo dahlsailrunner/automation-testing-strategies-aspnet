@@ -22,7 +22,7 @@ public class NewProductValidator : AbstractValidator<NewProductModel>
         RuleFor(p => p.Name)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull().WithMessage("{PropertyName} is required.")
-            .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.")
+            .MaximumLength(50)//.WithMessage("{PropertyName} must not exceed 50 characters.")
             .MustAsync(NameIsUnique).WithMessage("A product with the same name already exists.");
 
         RuleFor(p => p.Description)
