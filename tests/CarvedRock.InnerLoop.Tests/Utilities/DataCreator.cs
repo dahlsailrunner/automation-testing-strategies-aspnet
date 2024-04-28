@@ -18,6 +18,7 @@ public static class DataCreator
     }
 
     public static readonly Faker<Product> ProductFaker = new Faker<Product>()
+        .UseSeed(42)
         .RuleFor(p => p.Name, f => f.Commerce.ProductName().ClampLength(max: 50))
         .RuleFor(p => p.Description, f => f.Commerce.ProductDescription().ClampLength(max: 150))
         .RuleFor(p => p.Category, f => f.PickRandom("boots", "equip", "kayak"))

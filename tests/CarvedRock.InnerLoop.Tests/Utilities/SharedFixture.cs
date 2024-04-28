@@ -19,6 +19,7 @@ namespace CarvedRock.InnerLoop.Tests.Utilities;
 public class SharedFixture : IAsyncLifetime
 {
     public readonly Faker<NewProductModel> NewProductFaker = new Faker<NewProductModel>()
+        .UseSeed(2001)
         .RuleFor(p => p.Name, f => f.Commerce.ProductName())
         .RuleFor(p => p.Description, f => f.Commerce.ProductDescription())
         .RuleFor(p => p.Category, f => f.PickRandom("boots", "equip", "kayak"))

@@ -9,18 +9,18 @@ public class AccessDeniedPageTests(CustomWebAppFactory factory)
     : IClassFixture<CustomWebAppFactory>
 {
     [Fact]
-    public async Task GetThankYouPage()
+    public async Task GetAccessDeniedPage()
     {
         var client = factory.CreateClient();
         client.DefaultRequestHeaders.Add("X-Authorization", "Erik Smith");
         client.DefaultRequestHeaders.Add("X-Test-idp", "Microsoft");
 
-        var thankYouPageResponse = await client.GetAsync("/accessdenied");
-        var thankYouPage = await HtmlHelpers.GetDocumentAsync(thankYouPageResponse);
+        var pageResponse = await client.GetAsync("/accessdenied");
+        var accessDeniedPage = await HtmlHelpers.GetDocumentAsync(pageResponse);
 
-        Assert.Equal(HttpStatusCode.OK, thankYouPageResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, pageResponse.StatusCode);
 
-        var actualHeading = thankYouPage.QuerySelectorAll("h1").Select(e => e.TextContent);
+        var actualHeading = accessDeniedPage.QuerySelectorAll("h1").Select(e => e.TextContent);
         Assert.Equal("Access Denied", actualHeading.First());
     }
 }
